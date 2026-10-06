@@ -254,7 +254,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     <button class="hb hb-ic" id="refreshBtn" title="Янгилаш">⟳</button>
     <button class="hb" id="logoutBtn">Чиқиш</button>
   </div>
-  <div id="net" class="net hide">Алоқа йўқ — маълумот эскирган бўлиши мумкин</div>
+  <div id="net" class="net hide"></div>
 
   <div class="wrapc">
 
@@ -393,7 +393,7 @@ Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src;
 var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
 var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null }, blob = { b: null, t: null }, fname = { b: "", t: "" };
-var pending = 0, pollN = 0;
+var pending = 0, pollN = 0, netFails = 0;
 var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш"];
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
@@ -434,17 +434,35 @@ function saveCache() {
 }
 
 /* ═══════════════ API ═══════════════ */
+var WRITES = { add: 1, update: 1, pay: 1, attend: 1 };
+/* Интернет секин ёки узилиб қолса: 20 сония кутади, жавоб келмаса ўзи 2 марта қайта уринади.
+   Ёзувларда rid юборилади — сервер бир хил rid ни ИККИНЧИ марта бажармайди (дубликат бўлмайди). */
 function api(action, data) {
   var body = Object.assign({ action: action, login: auth.login, password: auth.password }, data || {});
-  // text/plain — Apps Script uchun CORS muammosiz ishlaydi
-  return fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) })
-    .then(function (r) { return r.text(); })
-    .then(function (t) {
-      var j;
-      try { j = JSON.parse(t); } catch (e) { throw new Error("Сервер жавоби нотўғри — Apps Script deploy'ни текширинг"); }
-      if (!j.ok) { var er = new Error(j.error || "Хато"); er.auth = j.auth; er.row = j.row; throw er; }
-      return j;
+  if (WRITES[action]) body.rid = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+  var payload = JSON.stringify(body), tries = WRITES[action] ? 3 : 2;
+
+  function once() {
+    var ctl = window.AbortController ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 20000);
+    // text/plain — Apps Script uchun CORS muammosiz ishlaydi
+    return fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                            body: payload, signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.text(); })
+      .then(function (t) { clearTimeout(timer); return JSON.parse(t); },
+            function (e) { clearTimeout(timer); throw e; });
+  }
+  function attempt(n) {
+    return once().catch(function () {
+      if (n + 1 < tries) return new Promise(function (ok) { setTimeout(ok, 800); }).then(function () { return attempt(n + 1); });
+      var er = new Error("Интернет секин ёки узилди — жавоб келмади. Қайта уриниб кўринг.");
+      er.net = true; throw er;
     });
+  }
+  return attempt(0).then(function (j) {
+    if (!j.ok) { var er = new Error(j.error || "Хато"); er.auth = j.auth; er.row = j.row; throw er; }
+    return j;
+  });
 }
 function authFail(err) {
   if (err && err.auth === false) { logout(); box("lMsg", "mer", err.message); return true; }
@@ -533,13 +551,15 @@ function redrawCard(boxId, k, where) {
 function refresh(full, loud) {
   if (!auth) return Promise.resolve();
   return api("list", full ? {} : { ver: ver }).then(function (j) {
-    $("net").classList.add("hide");
+    netFails = 0; $("net").classList.add("hide");
     setMe(j.me);
     if (j.same || pending > 0) return;       // o'zgarish yo'q / yozuv ketayotgan payt
     rows = j.rows || []; ver = j.ver || ""; saveCache(); renderAll();
   }).catch(function (err) {
     if (authFail(err)) return;
-    if (loud) toast(err.message, true); else $("net").classList.remove("hide");
+    netFails++;
+    if (loud) toast(err.message, true);
+    else if (netFails >= 2) { $("net").textContent = err.net ? "Интернет секин ёки узилди — қайта уринилмоқда…" : err.message; $("net").classList.remove("hide"); }
   });
 }
 $("refreshBtn").addEventListener("click", function () {
