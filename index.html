@@ -249,7 +249,7 @@ var POS = {
 var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "xodim" }, rows = [], editId = null, curBlob = null, curFile = "";
 var view = "dav", filter = "all", dvCur = null, mdCur = null;
-var ROLE = { admin: "Admin", moliya: "Moliya", xodim: "Xodim" };
+var ROLE = { admin: "Admin", kurator: "Kurator", kassa: "Kassa", zamdirektor: "Zam. direktor" };
 var tpl = new Image(); tpl.src = TPL_SRC;
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
@@ -265,7 +265,7 @@ function fmt(v) {
   return typeof v === "number" ? v.toLocaleString("ru-RU") : String(v);
 }
 function msg(id, text, ok) { var e = $(id); e.textContent = text || ""; e.classList.toggle("ok", !!ok); }
-function canMoney() { return me.role !== "xodim"; }
+function canMoney() { return true; }   // hammada hamma funksiya ochiq
 function byId(id) { id = String(id); for (var i = 0; i < rows.length; i++) if (rows[i].id === id) return rows[i]; return null; }
 function merge(r) {
   if (!r) return;
@@ -457,12 +457,11 @@ function drawGuest(box, r, where) {
   var debt = r.qarz > 0;
   if (debt) {
     var b = el("div", "banner bad", "QARZ: " + fmt(r.qarz));
-    b.appendChild(el("small", "", canMoney() ? "To'lovni qabul qilib, pastga summani yozing" : "Kiritmang — MOLIYAGA yuboring"));
     box.appendChild(b);
     if (canMoney()) {
       var pay = el("form", "pay");
       var inp = el("input"); inp.inputMode = "numeric"; inp.autocomplete = "off"; inp.value = r.qarz; inp.setAttribute("aria-label", "To'lov summasi");
-      var pb = el("button", "", "To'lov qabul qilish");
+      var pb = el("button", "", "To'lovni yozish");
       pay.appendChild(inp); pay.appendChild(pb);
       pay.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -485,7 +484,7 @@ function drawGuest(box, r, where) {
     un.addEventListener("click", function () { run(un, "attend", { status: "" }); });
     btns.appendChild(un);
   } else {
-    var ok = el("button", "green", debt && canMoney() ? "Qarz bilan kiritish" : "KELDI");
+    var ok = el("button", "green", "KELDI");
     if (debt && !canMoney()) ok.disabled = true;
     ok.addEventListener("click", function () { run(ok, "attend", { status: "Keldi" }); });
     btns.appendChild(ok);
