@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#4f46e5">
-<title>Turon Forum</title>
+<title>Турон Форум</title>
 <script>
 /* ═══════════════ SOZLAMA ═══════════════
    Apps Script → Развертывание dan chiqqan …/exec manzilini shu yerga qo'ying */
@@ -235,13 +235,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 <form id="lWrap">
   <div class="lbox">
     <div class="llogo">🎫</div>
-    <div class="ltitle">Turon Forum</div>
-    <div class="lsub">Bilet · Taklifnoma · Davomat</div>
-    <label class="fl" for="lU">Foydalanuvchi</label>
+    <div class="ltitle">Турон Форум</div>
+    <div class="lsub">Билет · Таклифнома · Давомат</div>
+    <label class="fl" for="lU">Фойдаланувчи</label>
     <input type="text" id="lU" class="fi" placeholder="admin" autocomplete="username" autocapitalize="off" required>
-    <label class="fl" for="lP">Parol</label>
+    <label class="fl" for="lP">Парол</label>
     <input type="password" id="lP" class="fi" placeholder="••••••••" autocomplete="current-password" required>
-    <button class="btn bp" id="loginBtn">Kirish</button>
+    <button class="btn bp" id="loginBtn">Кириш</button>
     <div id="lMsg"></div>
   </div>
 </form>
@@ -249,52 +249,52 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 <!-- ══ APP ══ -->
 <div id="aWrap" class="hide">
   <div class="hdr">
-    <div class="ht" id="hT">Boshqaruv</div>
+    <div class="ht" id="hT">Бошқарув</div>
     <div class="hu" id="hU"></div>
-    <button class="hb hb-ic" id="refreshBtn" title="Yangilash">⟳</button>
-    <button class="hb" id="logoutBtn">Chiqish</button>
+    <button class="hb hb-ic" id="refreshBtn" title="Янгилаш">⟳</button>
+    <button class="hb" id="logoutBtn">Чиқиш</button>
   </div>
-  <div id="net" class="net hide">Aloqa yo'q — ma'lumot eskirgan bo'lishi mumkin</div>
+  <div id="net" class="net hide">Алоқа йўқ — маълумот эскирган бўлиши мумкин</div>
 
   <div class="wrapc">
 
   <!-- ── BOSHQARUV ── -->
   <div id="p0" class="page">
     <div class="sg">
-      <div class="sc"><div class="scn cbl" id="dB">0</div><div class="scl">Biletlar</div></div>
-      <div class="sc a"><div class="scn cam" id="dT">0</div><div class="scl">Taklifnomalar</div></div>
-      <div class="sc g"><div class="scn cgr" id="dK">0</div><div class="scl">Keldi</div></div>
-      <div class="sc r"><div class="scn crd" id="dQn">0</div><div class="scl">Qarzdorlar</div></div>
-      <div class="sc a"><div class="scn cam" id="dDog">0</div><div class="scl">Jami dogovor</div></div>
-      <div class="sc g"><div class="scn cgr" id="dPaid">0</div><div class="scl">To'langan</div></div>
+      <div class="sc"><div class="scn cbl" id="dB">0</div><div class="scl">Билетлар</div></div>
+      <div class="sc a"><div class="scn cam" id="dT">0</div><div class="scl">Таклифномалар</div></div>
+      <div class="sc g"><div class="scn cgr" id="dK">0</div><div class="scl">Келди</div></div>
+      <div class="sc r"><div class="scn crd" id="dQn">0</div><div class="scl">Қарздорлар</div></div>
+      <div class="sc a"><div class="scn cam" id="dDog">0</div><div class="scl">Жами договор</div></div>
+      <div class="sc g"><div class="scn cgr" id="dPaid">0</div><div class="scl">Тўланган</div></div>
       <div class="sc r wide">
         <div class="scn crd" id="dQ">0</div>
-        <div class="scl">Umumiy qolgan qarz</div>
+        <div class="scl">Умумий қолган қарз</div>
         <div class="pbar"><div class="pfill" id="dPay" style="width:0%"></div></div>
       </div>
     </div>
     <div class="card">
-      <div class="ct">✅ Davomat</div>
+      <div class="ct">✅ Давомат</div>
       <div id="attD"></div>
     </div>
-    <div class="card"><div class="ct">👥 Kim nechta kiritgan</div><div id="byD"></div></div>
+    <div class="card"><div class="ct">👥 Ким нечта киритган</div><div id="byD"></div></div>
   </div>
 
   <!-- ── DAVOMAT ── -->
   <div id="p1" class="page">
     <div class="swrap">
       <form class="sbox" id="sForm">
-        <div class="slbl">🔍 ID yoki ism bo'yicha</div>
+        <div class="slbl">🔍 ID ёки исм бўйича</div>
         <div class="srow">
-          <input type="text" id="sId" class="fi idin" placeholder="ID" autocomplete="off" inputmode="search" aria-label="ID yoki ism">
-          <button class="btn bp bsm" style="margin:0">Tekshirish</button>
+          <input type="text" id="sId" class="fi idin" placeholder="ID" autocomplete="off" inputmode="search" aria-label="ID ёки исм">
+          <button class="btn bp bsm" style="margin:0">Текшириш</button>
         </div>
         <div id="sMsg"></div>
       </form>
       <div id="sPick"></div>
       <div id="stCard" class="hide"></div>
       <div class="card" style="margin:0">
-        <div class="ct">🕘 Oxirgi kelganlar <span id="lastCnt" style="margin-left:auto;color:var(--ok)"></span></div>
+        <div class="ct">🕘 Охирги келганлар <span id="lastCnt" style="margin-left:auto;color:var(--ok)"></span></div>
         <div id="lastD"></div>
       </div>
     </div>
@@ -303,13 +303,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
   <!-- ── RO'YXAT ── -->
   <div id="p2" class="page">
     <div class="fbar">
-      <input type="text" id="fQ" class="fi" placeholder="Qidirish: ism yoki ID…" autocomplete="off" aria-label="Qidirish">
-      <select id="fT" class="fs" aria-label="Turi">
-        <option value="">Hammasi</option><option value="b">🎫 Bilet</option><option value="t">💌 Taklifnoma</option>
+      <input type="text" id="fQ" class="fi" placeholder="Қидириш: исм ёки ID…" autocomplete="off" aria-label="Қидириш">
+      <select id="fT" class="fs" aria-label="Тури">
+        <option value="">Ҳаммаси</option><option value="b">🎫 Билет</option><option value="t">💌 Таклифнома</option>
       </select>
-      <select id="fH" class="fs" aria-label="Holat">
-        <option value="">Barcha holat</option><option value="came">✅ Keldi</option>
-        <option value="wait">⏳ Kelmagan</option><option value="debt">💰 Qarzdor</option>
+      <select id="fH" class="fs" aria-label="Ҳолат">
+        <option value="">Барча ҳолат</option><option value="came">✅ Келди</option>
+        <option value="wait">⏳ Келмаган</option><option value="debt">💰 Қарздор</option>
       </select>
     </div>
     <div id="listCnt" style="padding:4px 18px 8px;font-size:11.5px;color:var(--mut);font-weight:700"></div>
@@ -320,24 +320,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
   <div id="p3" class="page">
     <div style="height:14px"></div>
     <form class="card" id="form_b">
-      <div class="ct" id="ft_b">🎫 Yangi bilet</div>
-      <label class="fl" for="fn_b">Ism familiya</label>
-      <input type="text" id="fn_b" class="fi" placeholder="Masalan: Aliyev Vali" autocomplete="off" required>
+      <div class="ct" id="ft_b">🎫 Янги билет</div>
+      <label class="fl" for="fn_b">Исм фамилия</label>
+      <input type="text" id="fn_b" class="fi" placeholder="Масалан: Алиев Вали" autocomplete="off" required>
       <div class="g2">
-        <div><label class="fl" for="fd_b">Dogovor summa</label><input type="text" id="fd_b" class="fi mny" placeholder="0" inputmode="numeric" autocomplete="off"></div>
-        <div><label class="fl" for="fz_b">Zaklad</label><input type="text" id="fz_b" class="fi mny" placeholder="0" inputmode="numeric" autocomplete="off"></div>
+        <div><label class="fl" for="fd_b">Договор сумма</label><input type="text" id="fd_b" class="fi mny" placeholder="0" inputmode="numeric" autocomplete="off"></div>
+        <div><label class="fl" for="fz_b">Заклад</label><input type="text" id="fz_b" class="fi mny" placeholder="0" inputmode="numeric" autocomplete="off"></div>
       </div>
-      <label class="fl" for="fp_b">Kelib to'lagan summa</label>
+      <label class="fl" for="fp_b">Келиб тўлаган сумма</label>
       <input type="text" id="fp_b" class="fi mny" placeholder="0" inputmode="numeric" autocomplete="off">
-      <button class="btn bp" id="fs_b">Saqlash va bilet chiqarish</button>
-      <button type="button" class="btn bgr hide" id="fx_b">➕ Yangi bilet</button>
+      <button class="btn bp" id="fs_b">Сақлаш ва билет чиқариш</button>
+      <button type="button" class="btn bgr hide" id="fx_b">➕ Янги билет</button>
     </form>
     <div class="card pv b hide" id="pv_b">
-      <div class="ct">🖼 Bilet <span id="pi_b" style="margin-left:auto;color:var(--pri)"></span></div>
-      <img id="pm_b" alt="Bilet">
+      <div class="ct">🖼 Билет <span id="pi_b" style="margin-left:auto;color:var(--pri)"></span></div>
+      <img id="pm_b" alt="Билет">
       <div class="brow">
-        <button type="button" class="btn bg" id="pd_b">⬇️ Yuklab olish</button>
-        <button type="button" class="btn bgr" id="ps_b">📤 Ulashish</button>
+        <button type="button" class="btn bg" id="pd_b">⬇️ Юклаб олиш</button>
+        <button type="button" class="btn bgr" id="ps_b">📤 Улашиш</button>
       </div>
     </div>
   </div>
@@ -346,18 +346,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
   <div id="p4" class="page">
     <div style="height:14px"></div>
     <form class="card" id="form_t">
-      <div class="ct" id="ft_t">💌 Yangi taklifnoma (bepul)</div>
-      <label class="fl" for="fn_t">Ism familiya</label>
-      <input type="text" id="fn_t" class="fi" placeholder="Masalan: Aliyev Vali" autocomplete="off" required>
-      <button class="btn bp" id="fs_t">Saqlash va taklifnoma chiqarish</button>
-      <button type="button" class="btn bgr hide" id="fx_t">➕ Yangi taklifnoma</button>
+      <div class="ct" id="ft_t">💌 Янги таклифнома (бепул)</div>
+      <label class="fl" for="fn_t">Исм фамилия</label>
+      <input type="text" id="fn_t" class="fi" placeholder="Масалан: Алиев Вали" autocomplete="off" required>
+      <button class="btn bp" id="fs_t">Сақлаш ва таклифнома чиқариш</button>
+      <button type="button" class="btn bgr hide" id="fx_t">➕ Янги таклифнома</button>
     </form>
     <div class="card pv t hide" id="pv_t">
-      <div class="ct">🖼 Taklifnoma <span id="pi_t" style="margin-left:auto;color:var(--pri)"></span></div>
-      <img id="pm_t" alt="Taklifnoma">
+      <div class="ct">🖼 Таклифнома <span id="pi_t" style="margin-left:auto;color:var(--pri)"></span></div>
+      <img id="pm_t" alt="Таклифнома">
       <div class="brow">
-        <button type="button" class="btn bg" id="pd_t">⬇️ Yuklab olish</button>
-        <button type="button" class="btn bgr" id="ps_t">📤 Ulashish</button>
+        <button type="button" class="btn bg" id="pd_t">⬇️ Юклаб олиш</button>
+        <button type="button" class="btn bgr" id="ps_t">📤 Улашиш</button>
       </div>
     </div>
   </div>
@@ -365,11 +365,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
   </div>
 
   <div class="bnav" id="bnav">
-    <button class="bni" data-p="0"><span class="bni-i">📊</span><span class="bni-l">Boshqaruv</span></button>
-    <button class="bni" data-p="1"><span class="bni-i">✅</span><span class="bni-l">Davomat</span></button>
-    <button class="bni" data-p="2"><span class="bni-i">👥</span><span class="bni-l">Ro'yxat</span></button>
-    <button class="bni" data-p="3"><span class="bni-i">🎫</span><span class="bni-l">Bilet</span></button>
-    <button class="bni" data-p="4"><span class="bni-i">💌</span><span class="bni-l">Taklifnoma</span></button>
+    <button class="bni" data-p="0"><span class="bni-i">📊</span><span class="bni-l">Бошқарув</span></button>
+    <button class="bni" data-p="1"><span class="bni-i">✅</span><span class="bni-l">Давомат</span></button>
+    <button class="bni" data-p="2"><span class="bni-i">👥</span><span class="bni-l">Рўйхат</span></button>
+    <button class="bni" data-p="3"><span class="bni-i">🎫</span><span class="bni-l">Билет</span></button>
+    <button class="bni" data-p="4"><span class="bni-i">💌</span><span class="bni-l">Таклифнома</span></button>
   </div>
 </div>
 
@@ -381,10 +381,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
    Rasm fayllari index.html yonida turadi (bilet.jpg, taklifnoma.jpg).
    Yozuv joyini siljitish kerak bo'lsa — shu yerdagi x / y ni o'zgartiring. */
 var TPL = {
-  b: { src: "bilet.jpg",      w: 1280, label: "Bilet",      file: "bilet",
+  b: { src: "bilet.jpg",      w: 1280, label: "Билет",      file: "bilet",
        name: { x: 505, y: 631, maxW: 505, size: 30 },     // "ҚАТНАШЧИ: ____" chizig'i ustida
        id:   { x: 640, y: 818, size: 24 } },              // eng pastda, o'rtada
-  t: { src: "taklifnoma.jpg", w: 853,  label: "Taklifnoma", file: "taklifnoma",
+  t: { src: "taklifnoma.jpg", w: 853,  label: "Таклифнома", file: "taklifnoma",
        name: { x: 490, y: 681, maxW: 480, size: 31 },     // "Ҳурматли ____" chizig'i ustida
        id:   { x: 426.5, y: 1247, size: 22 } }
 };
@@ -394,7 +394,7 @@ var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
 var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null }, blob = { b: null, t: null }, fname = { b: "", t: "" };
 var pending = 0, pollN = 0;
-var TITLES = ["Boshqaruv", "Davomat", "Ro'yxat", "Bilet yaratish", "Taklifnoma yaratish"];
+var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш"];
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
 function el(tag, cls, text) {
@@ -441,8 +441,8 @@ function api(action, data) {
     .then(function (r) { return r.text(); })
     .then(function (t) {
       var j;
-      try { j = JSON.parse(t); } catch (e) { throw new Error("Server javobi noto'g'ri — Apps Script deploy'ni tekshiring"); }
-      if (!j.ok) { var er = new Error(j.error || "Xato"); er.auth = j.auth; er.row = j.row; throw er; }
+      try { j = JSON.parse(t); } catch (e) { throw new Error("Сервер жавоби нотўғри — Apps Script deploy'ни текширинг"); }
+      if (!j.ok) { var er = new Error(j.error || "Хато"); er.auth = j.auth; er.row = j.row; throw er; }
       return j;
     });
 }
@@ -484,7 +484,7 @@ function logout() {
 $("lWrap").addEventListener("submit", function (e) {
   e.preventDefault();
   auth = { login: $("lU").value.trim().toLowerCase(), password: $("lP").value };
-  $("loginBtn").disabled = true; box("lMsg", "minf", "Tekshirilmoqda…");
+  $("loginBtn").disabled = true; box("lMsg", "minf", "Текширилмоқда…");
   api("list").then(function (j) {
     try { localStorage.setItem("turon_auth", JSON.stringify(auth)); } catch (e) {}
     box("lMsg"); $("lP").value = "";
@@ -557,7 +557,7 @@ document.addEventListener("visibilitychange", function () { if (auth && !documen
 function renderPanel() {
   var nb = 0, nt = 0, cb = 0, ct = 0, debt = 0, dog = 0, paid = 0, qarz = 0, by = {};
   rows.forEach(function (r) {
-    var came = r.att === "Keldi";
+    var came = r.att === "Келди";
     if (r.t === "b") {
       nb++; if (came) cb++;
       dog += n0(r.dog); paid += n0(r.zak) + n0(r.paid);
@@ -572,10 +572,10 @@ function renderPanel() {
   $("dPay").style.width = (dog > 0 ? Math.min(100, Math.round(paid * 100 / dog)) : 0) + "%";
 
   var a = $("attD"); a.textContent = "";
-  [["🎫 Bilet", cb, nb], ["💌 Taklifnoma", ct, nt]].forEach(function (x) {
+  [["🎫 Билет", cb, nb], ["💌 Таклифнома", ct, nt]].forEach(function (x) {
     var row = el("div", "krow"), l = el("div"); l.style.flex = "1";
     l.appendChild(el("div", "krn", x[0]));
-    l.appendChild(el("div", "kri", "Keldi " + x[1] + " · kelmagan " + (x[2] - x[1])));
+    l.appendChild(el("div", "kri", "Келди " + x[1] + " · келмаган " + (x[2] - x[1])));
     var pb = el("div", "pbar"), pf = el("div", "pfill"); pf.style.width = (x[2] ? Math.round(x[1] * 100 / x[2]) : 0) + "%";
     pb.appendChild(pf); l.appendChild(pb);
     row.appendChild(l); row.appendChild(el("div", "kcnt", x[1] + " / " + x[2]));
@@ -584,11 +584,11 @@ function renderPanel() {
 
   var d = $("byD"); d.textContent = "";
   var keys = Object.keys(by).sort(function (x, y) { return (by[y].b + by[y].t) - (by[x].b + by[x].t); });
-  if (!keys.length) d.appendChild(el("div", "kri", "Hali hech kim kiritilmagan"));
+  if (!keys.length) d.appendChild(el("div", "kri", "Ҳали ҳеч ким киритилмаган"));
   keys.forEach(function (k) {
     var row = el("div", "krow"), l = el("div");
     l.appendChild(el("div", "krn", k));
-    l.appendChild(el("div", "kri", "Bilet " + by[k].b + " · Taklifnoma " + by[k].t));
+    l.appendChild(el("div", "kri", "Билет " + by[k].b + " · Таклифнома " + by[k].t));
     row.appendChild(l); row.appendChild(el("div", "kcnt", by[k].b + by[k].t));
     d.appendChild(row);
   });
@@ -596,9 +596,9 @@ function renderPanel() {
 
 /* ═══════════════ RO'YXAT ELEMENTI ═══════════════ */
 function badge(r) {
-  if (r.att === "Keldi") return el("span", "bdg bkk", "✓ Keldi " + (r.attAt || ""));
-  if (r.att === "Kelmadi") return el("span", "bdg bmm", "Kelmadi");
-  return el("span", "bdg bmt", "Kutilmoqda");
+  if (r.att === "Келди") return el("span", "bdg bkk", "✓ Келди " + (r.attAt || ""));
+  if (r.att === "Келмади") return el("span", "bdg bmm", "Келмади");
+  return el("span", "bdg bmt", "Кутилмоқда");
 }
 function item(r, onClick) {
   var it = el("div", "si");
@@ -622,14 +622,14 @@ function renderList() {
   var q = $("fQ").value.trim().toLowerCase(), ft = $("fT").value, fh = $("fH").value, d = $("listD");
   var f = rows.filter(function (r) {
     if (ft && r.t !== ft) return false;
-    if (fh === "came" && r.att !== "Keldi") return false;
-    if (fh === "wait" && r.att === "Keldi") return false;
+    if (fh === "came" && r.att !== "Келди") return false;
+    if (fh === "wait" && r.att === "Келди") return false;
     if (fh === "debt" && !isDebt(r)) return false;
     return !q || r.name.toLowerCase().indexOf(q) >= 0 || r.id === q;
   }).sort(function (a, b) { return a.t === b.t ? n0(b.id) - n0(a.id) : (a.t < b.t ? -1 : 1); });
-  $("listCnt").textContent = f.length + " ta" + (f.length !== rows.length ? " (jami " + rows.length + ")" : "");
+  $("listCnt").textContent = f.length + " та" + (f.length !== rows.length ? " (жами " + rows.length + ")" : "");
   d.textContent = "";
-  if (!f.length) { d.appendChild(emptyBox("👥", rows.length ? "Topilmadi" : "Hali hech kim yo'q")); return; }
+  if (!f.length) { d.appendChild(emptyBox("👥", rows.length ? "Топилмади" : "Ҳали ҳеч ким йўқ")); return; }
   var frag = document.createDocumentFragment();
   f.slice(0, 300).forEach(function (r) { frag.appendChild(item(r, function (x) { openOv(key(x)); })); });
   d.appendChild(frag);
@@ -646,14 +646,14 @@ function drawGuest(host, r, where) {
   h.appendChild(el("div", "pnm", r.name));
   h.appendChild(el("div", "pidd", TPL[r.t].label + " · ID " + r.id));
   var tags = el("div", "ptags");
-  tags.appendChild(el("span", "ptag", r.att === "Keldi" ? "✓ Keldi " + (r.attAt || "") : r.att === "Kelmadi" ? "✕ Kelmadi" : "⏳ Kutilmoqda"));
-  if (r.by) tags.appendChild(el("span", "ptag", "Kiritdi: " + r.by));
+  tags.appendChild(el("span", "ptag", r.att === "Келди" ? "✓ Келди " + (r.attAt || "") : r.att === "Келмади" ? "✕ Келмади" : "⏳ Кутилмоқда"));
+  if (r.by) tags.appendChild(el("span", "ptag", "Киритди: " + r.by));
   h.appendChild(tags); card.appendChild(h);
 
   if (r.t === "b") {
     var st = el("div", "psts");
-    [["Dogovor", fmt(r.dog), ""], ["Zaklad", fmt(r.zak), ""], ["To'lagan", fmt(r.paid), " cgr"],
-     ["Qolgan", fmt(r.qarz > 0 ? r.qarz : 0), r.qarz > 0 ? " crd" : " cgr"]].forEach(function (x) {
+    [["Договор", fmt(r.dog), ""], ["Заклад", fmt(r.zak), ""], ["Тўлаган", fmt(r.paid), " cgr"],
+     ["Қолган", fmt(r.qarz > 0 ? r.qarz : 0), r.qarz > 0 ? " crd" : " cgr"]].forEach(function (x) {
       var c = el("div", "pst"); c.appendChild(el("div", "pstn" + x[2], x[1])); c.appendChild(el("div", "pstl", x[0])); st.appendChild(c);
     });
     card.appendChild(st);
@@ -661,65 +661,65 @@ function drawGuest(host, r, where) {
 
   var b = el("div", "gbody");
   if (isDebt(r)) {
-    b.appendChild(el("div", "qarzbox", "QARZ: " + fmt(r.qarz)));
+    b.appendChild(el("div", "qarzbox", "ҚАРЗ: " + fmt(r.qarz)));
     var pay = el("form", "payrow");
     var inp = el("input", "fi mny"); inp.type = "text"; inp.inputMode = "numeric"; inp.autocomplete = "off";
-    inp.value = fmt(r.qarz); inp.setAttribute("aria-label", "To'lov summasi");
-    var pb = el("button", "btn bp bsm", "To'lovni yozish");
+    inp.value = fmt(r.qarz); inp.setAttribute("aria-label", "Тўлов суммаси");
+    var pb = el("button", "btn bp bsm", "Тўловни ёзиш");
     pay.appendChild(inp); pay.appendChild(pb);
     pay.addEventListener("submit", function (e) {
       e.preventDefault();
       var a = n0(inp.value);
-      if (!(a > 0)) { toast("Summani kiriting", true); return; }
+      if (!(a > 0)) { toast("Суммани киритинг", true); return; }
       inp.blur();
       write("pay", r, { amount: a }, function (x) { x.paid = n0(x.paid) + a; x.qarz = n0(x.dog) - n0(x.zak) - n0(x.paid); });
-      toast("To'lov yozildi: " + fmt(a));
+      toast("Тўлов ёзилди: " + fmt(a));
     });
     b.appendChild(pay);
   } else if (r.t === "b") {
-    b.appendChild(el("div", "okbox", "Qarzi yo'q"));
+    b.appendChild(el("div", "okbox", "Қарзи йўқ"));
   } else {
-    b.appendChild(el("div", "okbox", "Bepul taklifnoma"));
+    b.appendChild(el("div", "okbox", "Бепул таклифнома"));
   }
 
   function att(status, msg) {
     write("attend", r, { status: status }, function (x) {
-      x.att = status; x.attAt = status === "Keldi" ? hhmm() : ""; x.attBy = status ? me.name : "";
+      x.att = status; x.attAt = status === "Келди" ? hhmm() : ""; x.attBy = status ? me.name : "";
     });
     if (msg) toast(msg);
-    if (where === "dav" && status === "Keldi") { $("sId").value = ""; $("sId").focus(); }
+    if (where === "dav" && status === "Келди") { $("sId").value = ""; $("sId").focus(); }
   }
 
-  if (r.att === "Keldi") {
-    var ok = el("div", "okbox", "✓ KELDI — " + (r.attAt || "")); ok.style.marginTop = "10px";
-    ok.appendChild(el("small", "", "Belgiladi: " + (r.attBy || "—")));
+  if (r.att === "Келди") {
+    var ok = el("div", "okbox", "✓ КЕЛДИ — " + (r.attAt || "")); ok.style.marginTop = "10px";
+    ok.appendChild(el("small", "", "Белгилади: " + (r.attBy || "—")));
     b.appendChild(ok);
-    var un = el("button", "btn bgr", "↩️ Bekor qilish"); un.type = "button"; un.style.marginTop = "10px";
-    un.addEventListener("click", function () { att("", "Bekor qilindi"); });
+    var un = el("button", "btn bgr", "↩️ Бекор қилиш"); un.type = "button"; un.style.marginTop = "10px";
+    un.addEventListener("click", function () { att("", "Бекор қилинди"); });
     b.appendChild(un);
   } else {
     var row = el("div", "brow"); row.style.marginTop = "12px";
-    var k1 = el("button", "btn bg", "✅ KELDI"); k1.type = "button";
-    k1.addEventListener("click", function () { att("Keldi", r.name + " — keldi"); });
+    var k1 = el("button", "btn bg", "✅ КЕЛДИ"); k1.type = "button";
+    k1.addEventListener("click", function () { att("Келди", r.name + " — келди"); });
     row.appendChild(k1);
-    if (r.att === "Kelmadi") {
-      var cl = el("button", "btn bgr", "Belgini olish"); cl.type = "button";
+    if (r.att === "Келмади") {
+      var cl = el("button", "btn bgr", "Белгини олиш"); cl.type = "button";
       cl.addEventListener("click", function () { att("", ""); });
       row.appendChild(cl);
     } else {
-      var k2 = el("button", "btn br", "❌ Kelmadi"); k2.type = "button";
-      k2.addEventListener("click", function () { att("Kelmadi", ""); });
+      var k2 = el("button", "btn br", "❌ Келмади"); k2.type = "button";
+      k2.addEventListener("click", function () { att("Келмади", ""); });
       row.appendChild(k2);
     }
     b.appendChild(row);
   }
 
   var r2 = el("div", "brow");
-  var ed = el("button", "btn bgr", "✏️ Tahrirlash / rasm"); ed.type = "button";
+  var ed = el("button", "btn bgr", "✏️ Таҳрирлаш / расм"); ed.type = "button";
   ed.addEventListener("click", function () { closeOv(); go(r.t === "b" ? 3 : 4); openEdit(byKey(key(r)) || r); });
   r2.appendChild(ed);
   if (where === "ov") {
-    var x = el("button", "btn bgr", "Yopish"); x.type = "button"; x.addEventListener("click", closeOv); r2.appendChild(x);
+    var x = el("button", "btn bgr", "Ёпиш"); x.type = "button"; x.addEventListener("click", closeOv); r2.appendChild(x);
   }
   b.appendChild(r2);
   card.appendChild(b); host.appendChild(card);
@@ -753,21 +753,21 @@ function search(retry) {
   }
   // topilmadi — balki boshqa xodim hozirgina qo'shgan: serverdan yangilab, bir marta qayta qidiramiz
   if (!retry) {
-    box("sMsg", "minf", "Qidirilmoqda…");
+    box("sMsg", "minf", "Қидирилмоқда…");
     refresh(true, false).then(function () { search(true); });
     return;
   }
   curKey = null; $("stCard").classList.add("hide");
-  box("sMsg", "mer", "Topilmadi: " + v);
+  box("sMsg", "mer", "Топилмади: " + v);
 }
 $("sForm").addEventListener("submit", function (e) { e.preventDefault(); search(false); });
 
 function renderLast() {
   var d = $("lastD"); d.textContent = "";
-  var came = rows.filter(function (r) { return r.att === "Keldi"; });
+  var came = rows.filter(function (r) { return r.att === "Келди"; });
   $("lastCnt").textContent = came.length + " / " + rows.length;
   came.sort(function (a, b) { return a.attAt < b.attAt ? 1 : a.attAt > b.attAt ? -1 : 0; });
-  if (!came.length) { d.appendChild(el("div", "kri", "Hali hech kim kelmadi")); return; }
+  if (!came.length) { d.appendChild(el("div", "kri", "Ҳали ҳеч ким келмади")); return; }
   came.slice(0, 8).forEach(function (r) {
     var row = el("div", "krow"), l = el("div"); l.style.cursor = "pointer"; l.style.minWidth = "0";
     l.appendChild(el("div", "krn", r.name));
@@ -790,8 +790,8 @@ document.addEventListener("input", function (e) {
 function resetForm(t) {
   edit[t] = null;
   $("form_" + t).reset();
-  $("ft_" + t).textContent = t === "b" ? "🎫 Yangi bilet" : "💌 Yangi taklifnoma (bepul)";
-  $("fs_" + t).textContent = t === "b" ? "Saqlash va bilet chiqarish" : "Saqlash va taklifnoma chiqarish";
+  $("ft_" + t).textContent = t === "b" ? "🎫 Янги билет" : "💌 Янги таклифнома (бепул)";
+  $("fs_" + t).textContent = t === "b" ? "Сақлаш ва билет чиқариш" : "Сақлаш ва таклифнома чиқариш";
   $("fx_" + t).classList.add("hide");
   $("pv_" + t).classList.add("hide");
 }
@@ -802,7 +802,7 @@ function openEdit(r) {
   $("fn_" + t).value = r.name;
   if (t === "b") { $("fd_b").value = mv(r.dog); $("fz_b").value = mv(r.zak); $("fp_b").value = mv(r.paid); }
   $("ft_" + t).textContent = "✏️ " + TPL[t].label + " · ID " + r.id;
-  $("fs_" + t).textContent = "Saqlash";
+  $("fs_" + t).textContent = "Сақлаш";
   $("fx_" + t).classList.remove("hide");
   makeTicket(r);
 }
@@ -815,10 +815,10 @@ function openEdit(r) {
     if (t === "b") { data.dog = $("fd_b").value; data.zak = $("fz_b").value; data.paid = $("fp_b").value; }
     if (edit[t]) data.id = edit[t];
     var btn = $("fs_" + t), old = btn.textContent;
-    btn.disabled = true; btn.textContent = "Saqlanmoqda…";
+    btn.disabled = true; btn.textContent = "Сақланмоқда…";
     api(edit[t] ? "update" : "add", data).then(function (j) {
       merge(j.row); saveCache();
-      toast("Saqlandi — ID " + j.row.id);
+      toast("Сақланди — ID " + j.row.id);
       openEdit(j.row);
     }).catch(function (err) {
       btn.textContent = old;
@@ -880,7 +880,7 @@ function makeTicket(r) {
     }, "image/jpeg", 0.93);
   };
   if (img.complete && img.naturalWidth) draw();
-  else { img.onload = draw; img.onerror = function () { toast("Rasm yuklanmadi: " + P.src, true); }; }
+  else { img.onload = draw; img.onerror = function () { toast("Расм юкланмади: " + P.src, true); }; }
 }
 
 /* ═══════════════ START ═══════════════ */
