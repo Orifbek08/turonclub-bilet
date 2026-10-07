@@ -215,7 +215,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 .payrow .btn{margin:0}
 .idin{font-size:22px!important;font-weight:800;text-align:center;letter-spacing:.5px}
 .pv img{width:100%;border-radius:12px;display:block;border:1px solid var(--line)}
-.pv.t img{max-width:420px;margin:0 auto}
 .toast{position:fixed;left:16px;right:16px;top:calc(64px + env(safe-area-inset-top));z-index:90;background:#fff;
   border-left:5px solid var(--ok);padding:12px 14px;border-radius:12px;font-size:13.5px;font-weight:600;
   box-shadow:0 10px 30px rgba(15,23,42,.18);animation:fadeUp .2s both;max-width:560px;margin:0 auto}
@@ -381,12 +380,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
    Rasm fayllari index.html yonida turadi (bilet.jpg, taklifnoma.jpg).
    Yozuv joyini siljitish kerak bo'lsa — shu yerdagi x / y ni o'zgartiring. */
 var TPL = {
-  b: { src: "bilet.jpg",      w: 1280, label: "Билет",      file: "bilet",
-       name: { x: 505, y: 631, maxW: 505, size: 30 },     // "ҚАТНАШЧИ: ____" chizig'i ustida
-       id:   { x: 640, y: 818, size: 24 } },              // eng pastda, o'rtada
-  t: { src: "taklifnoma.jpg", w: 853,  label: "Таклифнома", file: "taklifnoma",
-       name: { x: 490, y: 681, maxW: 480, size: 31 },     // "Ҳурматли ____" chizig'i ustida
-       id:   { x: 426.5, y: 1247, size: 22 } }
+  b: { src: "chipta.jpg", w: 2000, label: "Билет",      file: "bilet" },
+  t: { src: "chipta.jpg", w: 2000, label: "Таклифнома", file: "taklifnoma" }
+};
+/* Ёзув жойлари (расм 2000×943). Ўнг томондаги тик қутилар: матн пастдан тепага ёзилади.
+   x — қути ўртаси, y — матн бошланадиган жой (пастки учи), len — тепага қараб бўш жой узунлиги. */
+var POS = {
+  name: { x: 1748, y: 616, len: 400, size: 40, boxW: 64 },   // «ФИО:» дан кейин
+  id:   { x: 1845, y: 676, len: 460, size: 46 }              // «ID:» дан кейин
 };
 Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src; TPL[k].img = i; });
 
@@ -869,24 +870,40 @@ function makeTicket(r) {
     c.width = img.naturalWidth; c.height = img.naturalHeight;
     var k = c.width / P.w, g = c.getContext("2d");
     g.drawImage(img, 0, 0);
+    var FONT = "px Georgia, 'Times New Roman', serif";
+    g.fillStyle = "#ffffff"; g.textAlign = "left"; g.textBaseline = "middle";
 
-    // — ism familiya —
-    var n = P.name, size = n.size * k;
-    g.textAlign = "center"; g.textBaseline = "alphabetic"; g.fillStyle = "#14110d";
-    do { g.font = "italic 700 " + size + "px Georgia, 'Times New Roman', serif"; size -= 1; }
-    while (g.measureText(r.name).width > n.maxW * k && size > 12 * k);
-    g.fillText(r.name, n.x * k, n.y * k);
+    // тик ёзув: (x, y) нуқтадан тепага қараб
+    function up(lines, p, size) {
+      g.save(); g.translate(p.x * k, p.y * k); g.rotate(-Math.PI / 2);
+      g.font = "700 " + (size * k) + FONT;
+      var gap = size * 1.12 * k, y0 = -(lines.length - 1) * gap / 2;
+      lines.forEach(function (s, i) { g.fillText(s, 0, y0 + i * gap + size * 0.06 * k); });
+      g.restore();
+    }
+    function width(s, size) { g.font = "700 " + (size * k) + FONT; return g.measureText(s).width / k; }
+    function fit(lines, p, max, min) {
+      var s = max;
+      while (s > min && Math.max.apply(null, lines.map(function (x) { return width(x, s); })) > p.len) s -= 1;
+      return s;
+    }
+
+    // — исм фамилия: сиғса бир қатор, сиғмаса икки қатор —
+    var n = POS.name, words = r.name.split(" "), lines = [r.name], size = fit(lines, n, n.size, 12);
+    if (size < 30 && words.length > 1) {
+      var best = null;
+      for (var i = 1; i < words.length; i++) {
+        var two = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
+        var s2 = fit(two, n, Math.floor(n.boxW / 2.2), 10);
+        if (!best || s2 > best.size) best = { lines: two, size: s2 };
+      }
+      if (best.size * 1.25 > size) { lines = best.lines; size = best.size; }
+    }
+    up(lines, n, size);
 
     // — ID —
-    var d = P.id, text = "ID  " + r.id;
-    g.font = "700 " + (d.size * k) + "px Georgia, 'Times New Roman', serif";
-    var w = g.measureText(text).width + 44 * k, h = (d.size + 16) * k, x = d.x * k - w / 2, y = d.y * k - h / 2;
-    g.beginPath();
-    if (g.roundRect) g.roundRect(x, y, w, h, h / 2); else g.rect(x, y, w, h);
-    g.fillStyle = "rgba(6,13,34,.88)"; g.fill();
-    g.lineWidth = 1.5 * k; g.strokeStyle = "#e9bd5b"; g.stroke();
-    g.fillStyle = "#f3cf7a"; g.textBaseline = "middle";
-    g.fillText(text, d.x * k, d.y * k + 1 * k);
+    var d = POS.id, idText = String(r.id);
+    up([idText], d, fit([idText], d, d.size, 14));
 
     c.toBlob(function (b) {
       blob[t] = b;
