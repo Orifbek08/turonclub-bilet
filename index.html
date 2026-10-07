@@ -394,7 +394,7 @@ Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src;
 var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
 var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null }, blob = { b: null, t: null }, fname = { b: "", t: "" };
-var pending = 0, pollN = 0, netFails = 0;
+var pending = 0, pollN = 0, netFails = 0, apiV = 0;
 var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш"];
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
@@ -441,7 +441,9 @@ var WRITES = { add: 1, update: 1, pay: 1, attend: 1 };
 function api(action, data) {
   var body = Object.assign({ action: action, login: auth.login, password: auth.password }, data || {});
   if (WRITES[action]) body.rid = Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
-  var payload = JSON.stringify(body), tries = WRITES[action] ? 3 : 2;
+  // Ёзувни қайта юбориш фақат сервер дубликатдан ҳимоялай олса (apiV ≥ 2) ёқилади —
+  // акс ҳолда битта одам икки марта ёзилиб қолиши мумкин.
+  var payload = JSON.stringify(body), tries = WRITES[action] ? (apiV >= 2 ? 3 : 1) : 2;
 
   function once() {
     var ctl = window.AbortController ? new AbortController() : null;
@@ -461,7 +463,7 @@ function api(action, data) {
     });
   }
   return attempt(0).then(function (j) {
-    if (!j.ok) { var er = new Error(j.error || "Хато"); er.auth = j.auth; er.row = j.row; throw er; }
+    if (!j.ok) { var er = new Error(j.error || "Хато"); er.auth = j.auth; er.row = j.row; er.dup = j.dup; throw er; }
     return j;
   });
 }
@@ -507,7 +509,7 @@ $("lWrap").addEventListener("submit", function (e) {
   api("list").then(function (j) {
     try { localStorage.setItem("turon_auth", JSON.stringify(auth)); } catch (e) {}
     box("lMsg"); $("lP").value = "";
-    setMe(j.me); rows = j.rows || []; ver = j.ver || ""; saveCache();
+    apiV = j.v || 0; setMe(j.me); rows = j.rows || []; ver = j.ver || ""; saveCache();
     showApp(true); go(1);
   }).catch(function (err) { auth = null; box("lMsg", "mer", err.message); })
     .then(function () { $("loginBtn").disabled = false; });
@@ -552,7 +554,7 @@ function redrawCard(boxId, k, where) {
 function refresh(full, loud) {
   if (!auth) return Promise.resolve();
   return api("list", full ? {} : { ver: ver }).then(function (j) {
-    netFails = 0; $("net").classList.add("hide");
+    netFails = 0; $("net").classList.add("hide"); apiV = j.v || 0;
     setMe(j.me);
     if (j.same || pending > 0) return;       // o'zgarish yo'q / yozuv ketayotgan payt
     rows = j.rows || []; ver = j.ver || ""; saveCache(); renderAll();
@@ -834,17 +836,45 @@ function openEdit(r) {
     var data = { t: t, name: $("fn_" + t).value.replace(/\s+/g, " ").trim() };
     if (!data.name) return;
     if (t === "b") { data.dog = $("fd_b").value; data.zak = $("fz_b").value; data.paid = $("fp_b").value; }
-    if (edit[t]) data.id = edit[t];
+    var isNew = !edit[t];
+    if (!isNew) data.id = edit[t];
     var btn = $("fs_" + t), old = btn.textContent;
+    if (btn.disabled) return;                      // икки марта босилса — иккинчиси ўтмайди
+
+    function same(r) { return r.t === t && r.name.toLowerCase() === data.name.toLowerCase(); }
+    function askDup(r) {
+      return window.confirm("«" + r.name + "» аллақачон рўйхатда бор (" + TPL[t].label + ", ID " + r.id + ").\n\n" +
+                            "Барибир ЯНГИ қилиб қўшилсинми?\n\nOK — қўшиш   |   Отмена — борини очиш");
+    }
+    // 1) юборишдан олдин: шу исм рўйхатда борми?
+    if (isNew) {
+      var ex = rows.filter(same)[0];
+      if (ex) { if (askDup(ex)) data.force = true; else { openEdit(ex); return; } }
+    }
+
     btn.disabled = true; btn.textContent = "Сақланмоқда…";
-    api(edit[t] ? "update" : "add", data).then(function (j) {
-      merge(j.row); saveCache();
-      toast("Сақланди — ID " + j.row.id);
-      openEdit(j.row);
-    }).catch(function (err) {
-      btn.textContent = old;
-      if (!authFail(err)) toast(err.message, true);
-    }).then(function () { btn.disabled = false; });
+    function done(row, text) { merge(row); saveCache(); toast(text || ("Сақланди — ID " + row.id)); openEdit(row); }
+    function fail(err) { btn.textContent = old; if (!authFail(err)) toast(err.message, true); }
+    function send() {
+      var before = rows.filter(same).map(function (r) { return r.id; });
+      return api(isNew ? "add" : "update", data).then(function (j) { done(j.row); }, function (err) {
+        // 2) сервер айтди: бу исм бор (бошқа ходим ҳозиргина қўшган бўлиши мумкин)
+        if (err.dup && err.row) {
+          merge(err.row);
+          if (askDup(err.row)) { data.force = true; return send(); }
+          btn.textContent = old; openEdit(err.row); return;
+        }
+        // 3) жавоб келмади: ёзилганми-йўқми — рўйхатдан текширамиз, қайта ЁЗМАЙМИЗ
+        if (err.net && isNew) {
+          return refresh(true, false).then(function () {
+            var got = rows.filter(function (r) { return same(r) && before.indexOf(r.id) < 0; })[0];
+            if (got) done(got, "Сақланган экан — ID " + got.id); else fail(err);
+          });
+        }
+        fail(err);
+      });
+    }
+    send().then(function () { btn.disabled = false; });
   });
   $("fx_" + t).addEventListener("click", function () { resetForm(t); $("fn_" + t).focus(); });
 
