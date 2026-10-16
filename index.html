@@ -226,6 +226,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 .net{font-size:11px;font-weight:700;color:#fff;background:#b45309;text-align:center;padding:5px}
 @media(min-width:700px){.sg{grid-template-columns:repeat(4,1fr)}.wide{grid-column:span 4}}
 
+
+/* ── Келиб тўлов (оч кўк) ── */
+.sav.k{background:linear-gradient(135deg,#7dd3fc,#0ea5e9);box-shadow:0 4px 12px rgba(14,165,233,.3)}
+.gcard.k .phdr{background:linear-gradient(140deg,#0369a1,#0ea5e9 55%,#7dd3fc)}
+.btn.bk{background:linear-gradient(135deg,#38bdf8,#0284c7);box-shadow:0 6px 18px rgba(2,132,199,.3)}
+.bdg.bsky{background:#e0f2fe;color:#075985}
+.bni-l{white-space:nowrap}
+@media(max-width:400px){.bni-l{font-size:9px}.bni-i{font-size:19px}}
+.sc.k::before{background:#0ea5e9}
 </style>
 </head>
 <body>
@@ -262,6 +271,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     <div class="sg">
       <div class="sc"><div class="scn cbl" id="dB">0</div><div class="scl">Билетлар</div></div>
       <div class="sc a"><div class="scn cam" id="dT">0</div><div class="scl">Таклифномалар</div></div>
+      <div class="sc k"><div class="scn" id="dKt" style="color:#0284c7">0</div><div class="scl">Келиб тўлов</div></div>
+      <div class="sc p"><div class="scn cpr" id="dW">0</div><div class="scl">Ҳали келмаган</div></div>
       <div class="sc g"><div class="scn cgr" id="dK">0</div><div class="scl">Келди</div></div>
       <div class="sc r"><div class="scn crd" id="dQn">0</div><div class="scl">Қарздорлар</div></div>
       <div class="sc a"><div class="scn cam" id="dDog">0</div><div class="scl">Жами договор</div></div>
@@ -304,7 +315,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     <div class="fbar">
       <input type="text" id="fQ" class="fi" placeholder="Қидириш: исм ёки ID…" autocomplete="off" aria-label="Қидириш">
       <select id="fT" class="fs" aria-label="Тури">
-        <option value="">Ҳаммаси</option><option value="b">🎫 Билет</option><option value="t">💌 Таклифнома</option>
+        <option value="">Ҳаммаси</option><option value="b">🎫 Билет</option><option value="t">💌 Таклифнома</option><option value="k">🔵 Келиб тўлов</option>
       </select>
       <select id="fH" class="fs" aria-label="Ҳолат">
         <option value="">Барча ҳолат</option><option value="came">✅ Келди</option>
@@ -361,6 +372,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     </div>
   </div>
 
+
+  <!-- ── KELIB TO'LOV QILADIGANLAR ── -->
+  <div id="p5" class="page">
+    <div style="height:14px"></div>
+    <form class="card" id="form_k">
+      <div class="ct" id="ft_k">🔵 Янги билет — келиб тўлов қиладиган</div>
+      <label class="fl" for="fn_k">Исм фамилия</label>
+      <input type="text" id="fn_k" class="fi" placeholder="Масалан: Алиев Вали" autocomplete="off" required>
+      <div class="g2">
+        <div><label class="fl" for="fc_k">Куратори</label>
+          <select id="fc_k" class="fs"><option value="">— Танланг —</option></select></div>
+        <div><label class="fl" for="fe_k">Тел рақами</label>
+          <input type="tel" id="fe_k" class="fi" placeholder="90 123 45 67" autocomplete="off" inputmode="tel"></div>
+      </div>
+      <button class="btn bp bk" id="fs_k">Сақлаш ва билет чиқариш</button>
+      <button type="button" class="btn bgr hide" id="fx_k">➕ Янги билет</button>
+    </form>
+    <div class="card pv k hide" id="pv_k">
+      <div class="ct">🖼 Билет (келиб тўлов) <span id="pi_k" style="margin-left:auto;color:#0284c7"></span></div>
+      <img id="pm_k" alt="Билет">
+      <div class="brow">
+        <button type="button" class="btn bg" id="pd_k">⬇️ Юклаб олиш</button>
+        <button type="button" class="btn bgr" id="ps_k">📤 Улашиш</button>
+      </div>
+    </div>
+  </div>
+
   </div>
 
   <div class="bnav" id="bnav">
@@ -369,6 +407,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     <button class="bni" data-p="2"><span class="bni-i">👥</span><span class="bni-l">Рўйхат</span></button>
     <button class="bni" data-p="3"><span class="bni-i">🎫</span><span class="bni-l">Билет</span></button>
     <button class="bni" data-p="4"><span class="bni-i">💌</span><span class="bni-l">Таклифнома</span></button>
+    <button class="bni" data-p="5"><span class="bni-i">🔵</span><span class="bni-l">Келиб тўлов</span></button>
   </div>
 </div>
 
@@ -381,7 +420,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
    Yozuv joyini siljitish kerak bo'lsa — shu yerdagi x / y ni o'zgartiring. */
 var TPL = {
   b: { src: "chipta.jpg", w: 2000, label: "Билет",      file: "bilet" },
-  t: { src: "chipta.jpg", w: 2000, label: "Таклифнома", file: "taklifnoma" }
+  t: { src: "chipta.jpg", w: 2000, label: "Таклифнома", file: "taklifnoma" },
+  k: { src: "chipta_k.jpg", w: 2000, label: "Келиб тўлов", file: "kelib-tolov" }   // оч кўк
 };
 /* Ёзув жойлари (расм 2000×943). Ўнг томондаги тик қутилар: матн пастдан тепага ёзилади.
    x — қути ўртаси, y — матн бошланадиган жой (пастки учи), len — тепага қараб бўш жой узунлиги. */
@@ -393,9 +433,10 @@ Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src;
 
 var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
-var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null }, blob = { b: null, t: null }, fname = { b: "", t: "" };
+var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null, k: null }, blob = { b: null, t: null, k: null }, fname = { b: "", t: "", k: "" };
 var pending = 0, pollN = 0, netFails = 0, apiV = 0;
-var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш"];
+var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш", "Келиб тўлов — билет"];
+var kurs = [];
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
 function el(tag, cls, text) {
@@ -430,8 +471,26 @@ function toast(text, bad) {
 }
 function box(id, cls, text) { var b = $(id); b.textContent = ""; if (text) b.appendChild(el("div", cls, text)); }
 
+/** «Куратори» рўйхати — Sheets'даги очиладиган рўйхатдан келади */
+function setKurs(list) {
+  if (list && list.length) kurs = list;
+  var s = $("fc_k"), cur = s.value; s.textContent = "";
+  s.appendChild(new Option("— Танланг —", ""));
+  var all = kurs.slice();
+  if (cur && all.indexOf(cur) < 0) all.push(cur);
+  all.forEach(function (x) { s.appendChild(new Option(x, x)); });
+  s.value = cur;
+}
+/** Кирган ходим куратор бўлса — ўзи танланиб турсин («Раъно опа» → «Рано») */
+function myKur() {
+  function nz(x) { return String(x).toLowerCase().replace(/ъ/g, "").replace(/\s*опа$/, "").replace(/бек$/, "").trim(); }
+  var me1 = nz(me.name || "");
+  for (var i = 0; i < kurs.length; i++) { var k = nz(kurs[i]); if (k && (me1.indexOf(k) === 0 || k.indexOf(me1) === 0)) return kurs[i]; }
+  return "";
+}
+
 function saveCache() {
-  try { localStorage.setItem("turon_data", JSON.stringify({ rows: rows, me: me })); } catch (e) {}
+  try { localStorage.setItem("turon_data", JSON.stringify({ rows: rows, me: me, kurs: kurs })); } catch (e) {}
 }
 
 /* ═══════════════ API ═══════════════ */
@@ -498,7 +557,7 @@ function showApp(on) {
 function setMe(m) { if (m) me = m; $("hU").textContent = me.name || ""; }
 function logout() {
   try { localStorage.removeItem("turon_auth"); localStorage.removeItem("turon_data"); } catch (e) {}
-  auth = null; rows = []; ver = ""; curKey = null; closeOv(); resetForm("b"); resetForm("t");
+  auth = null; rows = []; ver = ""; curKey = null; closeOv(); resetForm("b"); resetForm("t"); resetForm("k");
   $("stCard").classList.add("hide"); showApp(false);
 }
 
@@ -509,7 +568,7 @@ $("lWrap").addEventListener("submit", function (e) {
   api("list").then(function (j) {
     try { localStorage.setItem("turon_auth", JSON.stringify(auth)); } catch (e) {}
     box("lMsg"); $("lP").value = "";
-    apiV = j.v || 0; setMe(j.me); rows = j.rows || []; ver = j.ver || ""; saveCache();
+    apiV = j.v || 0; setMe(j.me); rows = j.rows || []; ver = j.ver || ""; setKurs(j.kurs); saveCache();
     showApp(true); go(1);
   }).catch(function (err) { auth = null; box("lMsg", "mer", err.message); })
     .then(function () { $("loginBtn").disabled = false; });
@@ -519,7 +578,7 @@ $("logoutBtn").addEventListener("click", logout);
 /* ═══════════════ NAVIGATSIYA ═══════════════ */
 function go(p) {
   page = p;
-  for (var i = 0; i < 5; i++) $("p" + i).classList.toggle("on", i === p);
+  for (var i = 0; i < 6; i++) $("p" + i).classList.toggle("on", i === p);
   Array.prototype.forEach.call($("bnav").children, function (b) { b.classList.toggle("on", +b.dataset.p === p); });
   $("hT").textContent = TITLES[p];
   renderAll();
@@ -532,9 +591,11 @@ $("bnav").addEventListener("click", function (e) {
   // menyudan kirilganda har doim YANGI forma (eski tahrir ustiga yozib yubormaslik uchun)
   if (p === 3) resetForm("b");
   if (p === 4) resetForm("t");
+  if (p === 5) resetForm("k");
   go(p);
   if (p === 3) $("fn_b").focus();
   if (p === 4) $("fn_t").focus();
+  if (p === 5) $("fn_k").focus();
 });
 
 function renderAll() {
@@ -557,7 +618,7 @@ function refresh(full, loud) {
     netFails = 0; $("net").classList.add("hide"); apiV = j.v || 0;
     setMe(j.me);
     if (j.same || pending > 0) return;       // o'zgarish yo'q / yozuv ketayotgan payt
-    rows = j.rows || []; ver = j.ver || ""; saveCache(); renderAll();
+    rows = j.rows || []; ver = j.ver || ""; setKurs(j.kurs); saveCache(); renderAll();
   }).catch(function (err) {
     if (authFail(err)) return;
     netFails++;
@@ -578,24 +639,26 @@ document.addEventListener("visibilitychange", function () { if (auth && !documen
 
 /* ═══════════════ BOSHQARUV ═══════════════ */
 function renderPanel() {
-  var nb = 0, nt = 0, cb = 0, ct = 0, debt = 0, dog = 0, paid = 0, qarz = 0, by = {};
+  var nb = 0, nt = 0, nk = 0, cb = 0, ct = 0, ck = 0, debt = 0, dog = 0, paid = 0, qarz = 0, by = {};
   rows.forEach(function (r) {
     var came = r.att === "Келди";
     if (r.t === "b") {
       nb++; if (came) cb++;
       dog += n0(r.dog); paid += n0(r.zak) + n0(r.paid);
       if (r.qarz > 0) { debt++; qarz += r.qarz; }
-    } else { nt++; if (came) ct++; }
-    var k = r.by || "—"; by[k] = by[k] || { b: 0, t: 0 }; by[k][r.t]++;
+    } else if (r.t === "k") { nk++; if (came) ck++; }
+    else { nt++; if (came) ct++; }
+    var k = r.by || "—"; by[k] = by[k] || { b: 0, t: 0, k: 0 }; by[k][r.t]++;
   });
-  $("dB").textContent = nb; $("dT").textContent = nt;
-  $("dK").textContent = (cb + ct) + " / " + (nb + nt);
+  $("dB").textContent = nb; $("dT").textContent = nt; $("dKt").textContent = nk;
+  $("dK").textContent = (cb + ct + ck) + " / " + (nb + nt + nk);
+  $("dW").textContent = (nb + nt + nk) - (cb + ct + ck);
   $("dQn").textContent = debt;
   $("dDog").textContent = fmt(dog); $("dPaid").textContent = fmt(paid); $("dQ").textContent = fmt(qarz);
   $("dPay").style.width = (dog > 0 ? Math.min(100, Math.round(paid * 100 / dog)) : 0) + "%";
 
   var a = $("attD"); a.textContent = "";
-  [["🎫 Билет", cb, nb], ["💌 Таклифнома", ct, nt]].forEach(function (x) {
+  [["🎫 Билет", cb, nb], ["💌 Таклифнома", ct, nt], ["🔵 Келиб тўлов", ck, nk]].forEach(function (x) {
     var row = el("div", "krow"), l = el("div"); l.style.flex = "1";
     l.appendChild(el("div", "krn", x[0]));
     l.appendChild(el("div", "kri", "Келди " + x[1] + " · келмаган " + (x[2] - x[1])));
@@ -606,13 +669,13 @@ function renderPanel() {
   });
 
   var d = $("byD"); d.textContent = "";
-  var keys = Object.keys(by).sort(function (x, y) { return (by[y].b + by[y].t) - (by[x].b + by[x].t); });
+  var keys = Object.keys(by).sort(function (x, y) { return (by[y].b + by[y].t + by[y].k) - (by[x].b + by[x].t + by[x].k); });
   if (!keys.length) d.appendChild(el("div", "kri", "Ҳали ҳеч ким киритилмаган"));
   keys.forEach(function (k) {
     var row = el("div", "krow"), l = el("div");
     l.appendChild(el("div", "krn", k));
-    l.appendChild(el("div", "kri", "Билет " + by[k].b + " · Таклифнома " + by[k].t));
-    row.appendChild(l); row.appendChild(el("div", "kcnt", by[k].b + by[k].t));
+    l.appendChild(el("div", "kri", "Билет " + by[k].b + " · Таклифнома " + by[k].t + " · Келиб тўлов " + by[k].k));
+    row.appendChild(l); row.appendChild(el("div", "kcnt", by[k].b + by[k].t + by[k].k));
     d.appendChild(row);
   });
 }
@@ -625,10 +688,10 @@ function badge(r) {
 }
 function item(r, onClick) {
   var it = el("div", "si");
-  it.appendChild(el("div", "sav" + (r.t === "t" ? " t" : ""), r.id));
+  it.appendChild(el("div", "sav " + r.t, r.id));
   var inf = el("div", "sinf");
   inf.appendChild(el("div", "sn", r.name));
-  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.by ? " · " + r.by : "")));
+  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.t === "k" && r.kur ? " · " + r.kur : r.by ? " · " + r.by : "")));
   it.appendChild(inf);
   var rt = el("div", "sright");
   rt.appendChild(badge(r));
@@ -702,7 +765,12 @@ function drawGuest(host, r, where) {
   } else if (r.t === "b") {
     b.appendChild(el("div", "okbox", "Қарзи йўқ"));
   } else {
-    b.appendChild(el("div", "okbox", "Бепул таклифнома"));
+    b.appendChild(el("div", "okbox", r.t === "k" ? "Келиб тўлов қилади" : "Бепул таклифнома"));
+  }
+  if (r.t === "k" && (r.kur || r.tel)) {
+    var ki = el("div", "kri", (r.kur ? "Куратори: " + r.kur : "") + (r.kur && r.tel ? " · " : "") + (r.tel ? "☎ " + r.tel : ""));
+    ki.style.cssText = "text-align:center;margin-top:8px;font-size:13px;font-weight:600";
+    b.appendChild(ki);
   }
 
   function att(status, msg) {
@@ -739,7 +807,7 @@ function drawGuest(host, r, where) {
 
   var r2 = el("div", "brow");
   var ed = el("button", "btn bgr", "✏️ Таҳрирлаш / расм"); ed.type = "button";
-  ed.addEventListener("click", function () { closeOv(); go(r.t === "b" ? 3 : 4); openEdit(byKey(key(r)) || r); });
+  ed.addEventListener("click", function () { closeOv(); go({ b: 3, t: 4, k: 5 }[r.t]); openEdit(byKey(key(r)) || r); });
   r2.appendChild(ed);
   if (where === "ov") {
     var x = el("button", "btn bgr", "Ёпиш"); x.type = "button"; x.addEventListener("click", closeOv); r2.appendChild(x);
@@ -813,8 +881,9 @@ document.addEventListener("input", function (e) {
 function resetForm(t) {
   edit[t] = null;
   $("form_" + t).reset();
-  $("ft_" + t).textContent = t === "b" ? "🎫 Янги билет" : "💌 Янги таклифнома (бепул)";
-  $("fs_" + t).textContent = t === "b" ? "Сақлаш ва билет чиқариш" : "Сақлаш ва таклифнома чиқариш";
+  $("ft_" + t).textContent = t === "b" ? "🎫 Янги билет" : t === "k" ? "🔵 Янги билет — келиб тўлов қиладиган" : "💌 Янги таклифнома (бепул)";
+  if (t === "k") { setKurs(); $("fc_k").value = myKur(); }
+  $("fs_" + t).textContent = t === "t" ? "Сақлаш ва таклифнома чиқариш" : "Сақлаш ва билет чиқариш";
   $("fx_" + t).classList.add("hide");
   $("pv_" + t).classList.add("hide");
 }
@@ -824,18 +893,20 @@ function openEdit(r) {
   edit[t] = r.id;
   $("fn_" + t).value = r.name;
   if (t === "b") { $("fd_b").value = mv(r.dog); $("fz_b").value = mv(r.zak); $("fp_b").value = mv(r.paid); }
+  if (t === "k") { $("fc_k").value = r.kur || ""; if ($("fc_k").value !== (r.kur || "")) { setKurs(); $("fc_k").value = r.kur || ""; } $("fe_k").value = r.tel || ""; }
   $("ft_" + t).textContent = "✏️ " + TPL[t].label + " · ID " + r.id;
   $("fs_" + t).textContent = "Сақлаш";
   $("fx_" + t).classList.remove("hide");
   makeTicket(r);
 }
 
-["b", "t"].forEach(function (t) {
+["b", "t", "k"].forEach(function (t) {
   $("form_" + t).addEventListener("submit", function (e) {
     e.preventDefault();
     var data = { t: t, name: $("fn_" + t).value.replace(/\s+/g, " ").trim() };
     if (!data.name) return;
     if (t === "b") { data.dog = $("fd_b").value; data.zak = $("fz_b").value; data.paid = $("fp_b").value; }
+    if (t === "k") { data.kur = $("fc_k").value; data.tel = $("fe_k").value; }
     var isNew = !edit[t];
     if (!isNew) data.id = edit[t];
     var btn = $("fs_" + t), old = btn.textContent;
@@ -954,7 +1025,7 @@ function makeTicket(r) {
 try { auth = JSON.parse(localStorage.getItem("turon_auth") || "null"); } catch (e) { auth = null; }
 if (auth) {
   // oldingi ma'lumot darhol ko'rsatiladi, yangisi fonda olinadi
-  try { var c0 = JSON.parse(localStorage.getItem("turon_data") || "null"); if (c0) { rows = c0.rows || []; setMe(c0.me); } } catch (e) {}
+  try { var c0 = JSON.parse(localStorage.getItem("turon_data") || "null"); if (c0) { rows = c0.rows || []; setMe(c0.me); setKurs(c0.kurs); } } catch (e) {}
   showApp(true); go(1); refresh(true, false);
 }
 </script>
