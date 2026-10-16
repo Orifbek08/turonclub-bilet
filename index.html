@@ -422,8 +422,8 @@ var TPL = {
 /* Ёзув жойлари (расм 2000×943). Ўнг томондаги тик қутилар: матн пастдан тепага ёзилади.
    x — қути ўртаси, y — матн бошланадиган жой (пастки учи), len — тепага қараб бўш жой узунлиги. */
 var POS = {
-  name: { x: 1748, y: 616, len: 400, size: 40, boxW: 64 },   // «ФИО:» дан кейин
-  id:   { x: 1845, y: 676, len: 460, size: 46 }              // «ID:» дан кейин
+  name: { x: 1748, y: 620, len: 408, size: 58, boxW: 70 },   // «ФИО:» дан кейин
+  id:   { x: 1845, y: 680, len: 465, size: 56 }              // «ID:» дан кейин
 };
 Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src; TPL[k].img = i; });
 
@@ -967,7 +967,7 @@ function makeTicket(r) {
 
     // — исм фамилия: сиғса бир қатор, сиғмаса икки қатор —
     var n = POS.name, words = r.name.split(" "), lines = [r.name], size = fit(lines, n, n.size, 12);
-    if (size < 30 && words.length > 1) {
+    if (size < 38 && words.length > 1) {
       var best = null;
       for (var i = 1; i < words.length; i++) {
         var two = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
