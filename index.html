@@ -380,12 +380,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
       <div class="ct" id="ft_k">🔵 Янги билет — келиб тўлов қиладиган</div>
       <label class="fl" for="fn_k">Исм фамилия</label>
       <input type="text" id="fn_k" class="fi" placeholder="Масалан: Алиев Вали" autocomplete="off" required>
-      <div class="g2">
-        <div><label class="fl" for="fc_k">Куратори</label>
-          <select id="fc_k" class="fs"><option value="">— Танланг —</option></select></div>
-        <div><label class="fl" for="fe_k">Тел рақами</label>
-          <input type="tel" id="fe_k" class="fi" placeholder="90 123 45 67" autocomplete="off" inputmode="tel"></div>
-      </div>
+      <label class="fl" for="fe_k">Тел рақами</label>
+      <input type="tel" id="fe_k" class="fi" placeholder="90 123 45 67" autocomplete="off" inputmode="tel">
       <button class="btn bp bk" id="fs_k">Сақлаш ва билет чиқариш</button>
       <button type="button" class="btn bgr hide" id="fx_k">➕ Янги билет</button>
     </form>
@@ -436,7 +432,6 @@ var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
 var page = 1, curKey = null, ovKey = null, edit = { b: null, t: null, k: null }, blob = { b: null, t: null, k: null }, fname = { b: "", t: "", k: "" };
 var pending = 0, pollN = 0, netFails = 0, apiV = 0;
 var TITLES = ["Бошқарув", "Давомат", "Рўйхат", "Билет яратиш", "Таклифнома яратиш", "Келиб тўлов — билет"];
-var kurs = [];
 
 /* ═══════════════ YORDAMCHILAR ═══════════════ */
 function el(tag, cls, text) {
@@ -471,26 +466,8 @@ function toast(text, bad) {
 }
 function box(id, cls, text) { var b = $(id); b.textContent = ""; if (text) b.appendChild(el("div", cls, text)); }
 
-/** «Куратори» рўйхати — Sheets'даги очиладиган рўйхатдан келади */
-function setKurs(list) {
-  if (list && list.length) kurs = list;
-  var s = $("fc_k"), cur = s.value; s.textContent = "";
-  s.appendChild(new Option("— Танланг —", ""));
-  var all = kurs.slice();
-  if (cur && all.indexOf(cur) < 0) all.push(cur);
-  all.forEach(function (x) { s.appendChild(new Option(x, x)); });
-  s.value = cur;
-}
-/** Кирган ходим куратор бўлса — ўзи танланиб турсин («Раъно опа» → «Рано») */
-function myKur() {
-  function nz(x) { return String(x).toLowerCase().replace(/ъ/g, "").replace(/\s*опа$/, "").replace(/бек$/, "").trim(); }
-  var me1 = nz(me.name || "");
-  for (var i = 0; i < kurs.length; i++) { var k = nz(kurs[i]); if (k && (me1.indexOf(k) === 0 || k.indexOf(me1) === 0)) return kurs[i]; }
-  return "";
-}
-
 function saveCache() {
-  try { localStorage.setItem("turon_data", JSON.stringify({ rows: rows, me: me, kurs: kurs })); } catch (e) {}
+  try { localStorage.setItem("turon_data", JSON.stringify({ rows: rows, me: me })); } catch (e) {}
 }
 
 /* ═══════════════ API ═══════════════ */
@@ -568,7 +545,7 @@ $("lWrap").addEventListener("submit", function (e) {
   api("list").then(function (j) {
     try { localStorage.setItem("turon_auth", JSON.stringify(auth)); } catch (e) {}
     box("lMsg"); $("lP").value = "";
-    apiV = j.v || 0; setMe(j.me); rows = j.rows || []; ver = j.ver || ""; setKurs(j.kurs); saveCache();
+    apiV = j.v || 0; setMe(j.me); rows = j.rows || []; ver = j.ver || ""; saveCache();
     showApp(true); go(1);
   }).catch(function (err) { auth = null; box("lMsg", "mer", err.message); })
     .then(function () { $("loginBtn").disabled = false; });
@@ -618,7 +595,7 @@ function refresh(full, loud) {
     netFails = 0; $("net").classList.add("hide"); apiV = j.v || 0;
     setMe(j.me);
     if (j.same || pending > 0) return;       // o'zgarish yo'q / yozuv ketayotgan payt
-    rows = j.rows || []; ver = j.ver || ""; setKurs(j.kurs); saveCache(); renderAll();
+    rows = j.rows || []; ver = j.ver || ""; saveCache(); renderAll();
   }).catch(function (err) {
     if (authFail(err)) return;
     netFails++;
@@ -882,7 +859,6 @@ function resetForm(t) {
   edit[t] = null;
   $("form_" + t).reset();
   $("ft_" + t).textContent = t === "b" ? "🎫 Янги билет" : t === "k" ? "🔵 Янги билет — келиб тўлов қиладиган" : "💌 Янги таклифнома (бепул)";
-  if (t === "k") { setKurs(); $("fc_k").value = myKur(); }
   $("fs_" + t).textContent = t === "t" ? "Сақлаш ва таклифнома чиқариш" : "Сақлаш ва билет чиқариш";
   $("fx_" + t).classList.add("hide");
   $("pv_" + t).classList.add("hide");
@@ -893,7 +869,7 @@ function openEdit(r) {
   edit[t] = r.id;
   $("fn_" + t).value = r.name;
   if (t === "b") { $("fd_b").value = mv(r.dog); $("fz_b").value = mv(r.zak); $("fp_b").value = mv(r.paid); }
-  if (t === "k") { $("fc_k").value = r.kur || ""; if ($("fc_k").value !== (r.kur || "")) { setKurs(); $("fc_k").value = r.kur || ""; } $("fe_k").value = r.tel || ""; }
+  if (t === "k") { $("fe_k").value = r.tel || ""; }
   $("ft_" + t).textContent = "✏️ " + TPL[t].label + " · ID " + r.id;
   $("fs_" + t).textContent = "Сақлаш";
   $("fx_" + t).classList.remove("hide");
@@ -906,7 +882,7 @@ function openEdit(r) {
     var data = { t: t, name: $("fn_" + t).value.replace(/\s+/g, " ").trim() };
     if (!data.name) return;
     if (t === "b") { data.dog = $("fd_b").value; data.zak = $("fz_b").value; data.paid = $("fp_b").value; }
-    if (t === "k") { data.kur = $("fc_k").value; data.tel = $("fe_k").value; }
+    if (t === "k") { data.tel = $("fe_k").value; }   // куратор Sheets'да танланади
     var isNew = !edit[t];
     if (!isNew) data.id = edit[t];
     var btn = $("fs_" + t), old = btn.textContent;
@@ -1025,7 +1001,7 @@ function makeTicket(r) {
 try { auth = JSON.parse(localStorage.getItem("turon_auth") || "null"); } catch (e) { auth = null; }
 if (auth) {
   // oldingi ma'lumot darhol ko'rsatiladi, yangisi fonda olinadi
-  try { var c0 = JSON.parse(localStorage.getItem("turon_data") || "null"); if (c0) { rows = c0.rows || []; setMe(c0.me); setKurs(c0.kurs); } } catch (e) {}
+  try { var c0 = JSON.parse(localStorage.getItem("turon_data") || "null"); if (c0) { rows = c0.rows || []; setMe(c0.me); } } catch (e) {}
   showApp(true); go(1); refresh(true, false);
 }
 </script>
