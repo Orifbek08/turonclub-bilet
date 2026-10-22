@@ -418,7 +418,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
    Yozuv joyini siljitish kerak bo'lsa — shu yerdagi x / y ni o'zgartiring. */
 var TPL = {
   b: { src: "chipta.jpg", w: 2000, label: "Билет",      file: "bilet" },
-  t: { src: "chipta.jpg", w: 2000, label: "Таклифнома", file: "taklifnoma" },
+  t: { src: "chipta.jpg", w: 2000, label: "Таклифнома", file: "taklifnoma", src3: "chipta3.jpg" },
   k: { src: "chipta_k.jpg", w: 2000, label: "Келиб тўлов", file: "kelib-tolov" }   // оч кўк
 };
 /* Ёзув жойлари (расм 2000×943). Ўнг томондаги тик қутилар: матн пастдан тепага ёзилади.
@@ -427,7 +427,16 @@ var POS = {
   name: { x: 1748, y: 620, len: 408, size: 58, boxW: 70 },   // «ФИО:» дан кейин
   id:   { x: 1845, y: 680, len: 465, size: 56 }              // «ID:» дан кейин
 };
-Object.keys(TPL).forEach(function (k) { var i = new Image(); i.src = TPL[k].src; TPL[k].img = i; });
+Object.keys(TPL).forEach(function (k) {
+  var i = new Image(); i.src = TPL[k].src; TPL[k].img = i;
+  if (TPL[k].src3) { var j = new Image(); j.src = TPL[k].src3; TPL[k].img3 = j; }   // 3 қутили вариант
+});
+/* «… орқасидан» ёзилган таклифнома: 3 та катта қути — ФИО | … орқасидан | ID (chipta3.jpg) */
+var POS3 = {
+  name: { x: 1701, y: 620, len: 408, size: 58, boxW: 70 },
+  ref:  { x: 1798, y: 757, len: 545, size: 58, boxW: 70 },
+  id:   { x: 1895, y: 680, len: 465, size: 56 }
+};
 
 var $ = function (id) { return document.getElementById(id); };
 var auth = null, me = { name: "", role: "" }, rows = [], ver = "";
@@ -950,7 +959,8 @@ function openEdit(r) {
 
 /* ═══════════════ RASM CHIZISH ═══════════════ */
 function makeTicket(r) {
-  var t = r.t, P = TPL[t], img = P.img;
+  var t = r.t, P = TPL[t], three = !!(r.ref && P.img3);
+  var img = three ? P.img3 : P.img, POSX = three ? POS3 : POS;
   var draw = function () {
     var c = document.createElement("canvas");
     c.width = img.naturalWidth; c.height = img.naturalHeight;
@@ -973,34 +983,24 @@ function makeTicket(r) {
       while (s > min && Math.max.apply(null, lines.map(function (x) { return width(x, s); })) > p.len) s -= 1;
       return s;
     }
-
-    var n = POS.name;
-    if (r.ref) {
-      // — таклифнома, «ким орқасидан» ёзилган: 1-қатор исм (оқ, катта), 2-қатор ким орқасидан (олтин) —
-      var refText = r.ref + " орқасидан";
-      var s1 = fit([r.name], n, 36, 16), s2 = fit([refText], n, 30, 14), gap = 5;
-      var left = n.x - (s1 + gap + s2) / 2;
-      up([r.name], { x: left + s1 / 2, y: n.y }, s1);
-      g.fillStyle = "#f6d27a";
-      up([refText], { x: left + s1 + gap + s2 / 2, y: n.y }, s2);
-      g.fillStyle = "#ffffff";
-    } else {
-    // — исм фамилия: сиғса бир қатор, сиғмаса икки қатор —
-    var words = r.name.split(" "), lines = [r.name], size = fit(lines, n, n.size, 12);
-    if (size < 38 && words.length > 1) {
-      var best = null;
-      for (var i = 1; i < words.length; i++) {
-        var two = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
-        var s2 = fit(two, n, Math.floor(n.boxW / 2.2), 10);
-        if (!best || s2 > best.size) best = { lines: two, size: s2 };
+    // катта ёзув: сиғса бир қатор, сиғмаса икки қатор
+    function big(text, p) {
+      var words = text.split(" "), lines = [text], size = fit(lines, p, p.size, 12);
+      if (size < 38 && words.length > 1) {
+        var best = null;
+        for (var i = 1; i < words.length; i++) {
+          var two = [words.slice(0, i).join(" "), words.slice(i).join(" ")];
+          var s2 = fit(two, p, Math.floor(p.boxW / 2.2), 10);
+          if (!best || s2 > best.size) best = { lines: two, size: s2 };
+        }
+        if (best.size * 1.25 > size) { lines = best.lines; size = best.size; }
       }
-      if (best.size * 1.25 > size) { lines = best.lines; size = best.size; }
-    }
-    up(lines, n, size);
+      up(lines, p, size);
     }
 
-    // — ID —
-    var d = POS.id, idText = String(r.id);
+    big(r.name, POSX.name);                                   // ФИО
+    if (three) big(r.ref + " орқасидан", POSX.ref);           // … орқасидан
+    var d = POSX.id, idText = String(r.id);                   // ID
     up([idText], d, fit([idText], d, d.size, 14));
 
     c.toBlob(function (b) {
