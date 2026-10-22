@@ -359,6 +359,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
       <div class="ct" id="ft_t">💌 Янги таклифнома (бепул)</div>
       <label class="fl" for="fn_t">Исм фамилия</label>
       <input type="text" id="fn_t" class="fi" placeholder="Масалан: Алиев Вали" autocomplete="off" required>
+      <label class="fl" for="fr_t">Ким орқасидан <span style="text-transform:none;font-weight:600">(ихтиёрий)</span></label>
+      <input type="text" id="fr_t" class="fi" placeholder="Масалан: Отабек" autocomplete="off">
       <button class="btn bp" id="fs_t">Сақлаш ва таклифнома чиқариш</button>
       <button type="button" class="btn bgr hide" id="fx_t">➕ Янги таклифнома</button>
     </form>
@@ -668,7 +670,7 @@ function item(r, onClick) {
   it.appendChild(el("div", "sav " + r.t, r.id));
   var inf = el("div", "sinf");
   inf.appendChild(el("div", "sn", r.name));
-  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.t === "k" && r.kur ? " · " + r.kur : r.by ? " · " + r.by : "")));
+  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.ref ? " · орқасидан: " + r.ref : r.t === "k" && r.kur ? " · " + r.kur : r.by ? " · " + r.by : "")));
   it.appendChild(inf);
   var rt = el("div", "sright");
   rt.appendChild(badge(r));
@@ -743,6 +745,11 @@ function drawGuest(host, r, where) {
     b.appendChild(el("div", "okbox", "Қарзи йўқ"));
   } else {
     b.appendChild(el("div", "okbox", r.t === "k" ? "Келиб тўлов қилади" : "Бепул таклифнома"));
+  }
+  if (r.ref) {
+    var rf = el("div", "kri", "Ким орқасидан: " + r.ref);
+    rf.style.cssText = "text-align:center;margin-top:8px;font-size:13px;font-weight:600";
+    b.appendChild(rf);
   }
   if (r.t === "k" && (r.kur || r.tel)) {
     var ki = el("div", "kri", (r.kur ? "Куратори: " + r.kur : "") + (r.kur && r.tel ? " · " : "") + (r.tel ? "☎ " + r.tel : ""));
@@ -870,6 +877,7 @@ function openEdit(r) {
   $("fn_" + t).value = r.name;
   if (t === "b") { $("fd_b").value = mv(r.dog); $("fz_b").value = mv(r.zak); $("fp_b").value = mv(r.paid); }
   if (t === "k") { $("fe_k").value = r.tel || ""; }
+  if (t === "t") { $("fr_t").value = r.ref || ""; }
   $("ft_" + t).textContent = "✏️ " + TPL[t].label + " · ID " + r.id;
   $("fs_" + t).textContent = "Сақлаш";
   $("fx_" + t).classList.remove("hide");
@@ -882,7 +890,8 @@ function openEdit(r) {
     var data = { t: t, name: $("fn_" + t).value.replace(/\s+/g, " ").trim() };
     if (!data.name) return;
     if (t === "b") { data.dog = $("fd_b").value; data.zak = $("fz_b").value; data.paid = $("fp_b").value; }
-    if (t === "k") { data.tel = $("fe_k").value; }   // куратор Sheets'да танланади
+    if (t === "k") { data.tel = $("fe_k").value; }
+    if (t === "t") { data.ref = $("fr_t").value.replace(/\s+/g, " ").trim(); }   // куратор Sheets'да танланади
     var isNew = !edit[t];
     if (!isNew) data.id = edit[t];
     var btn = $("fs_" + t), old = btn.textContent;
@@ -965,8 +974,19 @@ function makeTicket(r) {
       return s;
     }
 
+    var n = POS.name;
+    if (r.ref) {
+      // — таклифнома, «ким орқасидан» ёзилган: 1-қатор исм (оқ, катта), 2-қатор ким орқасидан (олтин) —
+      var refText = "Ким орқасидан: " + r.ref;
+      var s1 = fit([r.name], n, 40, 16), s2 = fit([refText], n, 24, 12), gap = 7;
+      var left = n.x - (s1 + gap + s2) / 2;
+      up([r.name], { x: left + s1 / 2, y: n.y }, s1);
+      g.fillStyle = "#f6d27a";
+      up([refText], { x: left + s1 + gap + s2 / 2, y: n.y }, s2);
+      g.fillStyle = "#ffffff";
+    } else {
     // — исм фамилия: сиғса бир қатор, сиғмаса икки қатор —
-    var n = POS.name, words = r.name.split(" "), lines = [r.name], size = fit(lines, n, n.size, 12);
+    var words = r.name.split(" "), lines = [r.name], size = fit(lines, n, n.size, 12);
     if (size < 38 && words.length > 1) {
       var best = null;
       for (var i = 1; i < words.length; i++) {
@@ -977,6 +997,7 @@ function makeTicket(r) {
       if (best.size * 1.25 > size) { lines = best.lines; size = best.size; }
     }
     up(lines, n, size);
+    }
 
     // — ID —
     var d = POS.id, idText = String(r.id);
