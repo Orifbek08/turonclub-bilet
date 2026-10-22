@@ -922,7 +922,15 @@ function openEdit(r) {
     function fail(err) { btn.textContent = old; if (!authFail(err)) toast(err.message, true); }
     function send() {
       var before = rows.filter(same).map(function (r) { return r.id; });
-      return api(isNew ? "add" : "update", data).then(function (j) { done(j.row); }, function (err) {
+      return api(isNew ? "add" : "update", data).then(function (j) {
+        // сервер «ким орқасидан» ни қайтармаса — Apps Script эски версияда қолган
+        if (t === "t" && data.ref && j.row && j.row.ref === undefined) {
+          j.row.ref = data.ref;
+          done(j.row, "Сақланди, лекин «орқасидан» Sheets'га ёзилмади — Apps Script'ни «Новая версия» қилинг");
+          return;
+        }
+        done(j.row);
+      }, function (err) {
         // 2) сервер айтди: бу исм бор (бошқа ходим ҳозиргина қўшган бўлиши мумкин)
         if (err.dup && err.row) {
           merge(err.row);
