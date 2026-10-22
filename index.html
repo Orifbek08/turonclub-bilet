@@ -670,7 +670,7 @@ function item(r, onClick) {
   it.appendChild(el("div", "sav " + r.t, r.id));
   var inf = el("div", "sinf");
   inf.appendChild(el("div", "sn", r.name));
-  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.ref ? " · орқасидан: " + r.ref : r.t === "k" && r.kur ? " · " + r.kur : r.by ? " · " + r.by : "")));
+  inf.appendChild(el("div", "ss", TPL[r.t].label + (r.ref ? " · " + r.ref + " орқасидан" : r.t === "k" && r.kur ? " · " + r.kur : r.by ? " · " + r.by : "")));
   it.appendChild(inf);
   var rt = el("div", "sright");
   rt.appendChild(badge(r));
@@ -747,7 +747,7 @@ function drawGuest(host, r, where) {
     b.appendChild(el("div", "okbox", r.t === "k" ? "Келиб тўлов қилади" : "Бепул таклифнома"));
   }
   if (r.ref) {
-    var rf = el("div", "kri", "Ким орқасидан: " + r.ref);
+    var rf = el("div", "kri", r.ref + " орқасидан");
     rf.style.cssText = "text-align:center;margin-top:8px;font-size:13px;font-weight:600";
     b.appendChild(rf);
   }
@@ -977,8 +977,8 @@ function makeTicket(r) {
     var n = POS.name;
     if (r.ref) {
       // — таклифнома, «ким орқасидан» ёзилган: 1-қатор исм (оқ, катта), 2-қатор ким орқасидан (олтин) —
-      var refText = "Ким орқасидан: " + r.ref;
-      var s1 = fit([r.name], n, 40, 16), s2 = fit([refText], n, 24, 12), gap = 7;
+      var refText = r.ref + " орқасидан";
+      var s1 = fit([r.name], n, 36, 16), s2 = fit([refText], n, 30, 14), gap = 5;
       var left = n.x - (s1 + gap + s2) / 2;
       up([r.name], { x: left + s1 / 2, y: n.y }, s1);
       g.fillStyle = "#f6d27a";
