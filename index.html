@@ -235,6 +235,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 .bni-l{white-space:nowrap}
 @media(max-width:400px){.bni-l{font-size:9px}.bni-i{font-size:19px}}
 .sc.k::before{background:#0ea5e9}
+.dlb{border:0;border-radius:9px;padding:6px 10px;font:700 12px/1 inherit;font-family:inherit;cursor:pointer;color:#fff;
+  background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 3px 10px rgba(16,185,129,.28);white-space:nowrap}
+.dlb:active{transform:scale(.95)}.dlb:disabled{opacity:.6}
 </style>
 </head>
 <body>
@@ -684,6 +687,9 @@ function item(r, onClick) {
   var rt = el("div", "sright");
   rt.appendChild(badge(r));
   if (isDebt(r)) rt.appendChild(el("span", "sq qred", "−" + fmt(r.qarz)));
+  var dl = el("button", "dlb", "⬇️ Билет"); dl.type = "button"; dl.title = "Билетни юклаб олиш";
+  dl.addEventListener("click", function (e) { e.stopPropagation(); downloadTicket(r, dl); });
+  rt.appendChild(dl);
   it.appendChild(rt);
   it.addEventListener("click", function () { onClick(r); });
   return it;
@@ -966,7 +972,7 @@ function openEdit(r) {
 });
 
 /* ═══════════════ RASM CHIZISH ═══════════════ */
-function makeTicket(r) {
+function makeTicket(r, onBlob) {
   var t = r.t, P = TPL[t], three = !!(r.ref && P.img3);
   var img = three ? P.img3 : P.img, POSX = three ? POS3 : POS;
   var draw = function () {
@@ -1012,8 +1018,10 @@ function makeTicket(r) {
     up([idText], d, fit([idText], d, d.size, 14));
 
     c.toBlob(function (b) {
+      var file = P.file + "-" + r.id + "-" + r.name.replace(/[^\p{L}\p{N}]+/gu, "_") + ".jpg";
+      if (onBlob) { onBlob(b, file); return; }       // рўйхатдан тўғридан-тўғри юклаб олиш
       blob[t] = b;
-      fname[t] = P.file + "-" + r.id + "-" + r.name.replace(/[^\p{L}\p{N}]+/gu, "_") + ".jpg";
+      fname[t] = file;
       var im = $("pm_" + t);
       if (im.src.indexOf("blob:") === 0) URL.revokeObjectURL(im.src);
       im.src = URL.createObjectURL(b);
@@ -1024,6 +1032,19 @@ function makeTicket(r) {
   };
   if (img.complete && img.naturalWidth) draw();
   else { img.onload = draw; img.onerror = function () { toast("Расм юкланмади: " + P.src, true); }; }
+}
+
+/** Рўйхатдаги «⬇️ Билет» тугмаси: билетни чизиб, дарров юклаб беради */
+function downloadTicket(r, btn) {
+  if (btn) { btn.disabled = true; btn.textContent = "…"; }
+  makeTicket(r, function (b, file) {
+    var a = document.createElement("a"), u = URL.createObjectURL(b);
+    a.href = u; a.download = file;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+    if (btn) { btn.disabled = false; btn.textContent = "⬇️ Билет"; }
+    toast("Юклаб олинди: ID " + r.id);
+  });
 }
 
 /* ═══════════════ START ═══════════════ */
